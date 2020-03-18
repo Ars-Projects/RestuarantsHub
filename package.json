@@ -1,0 +1,22 @@
+{
+  "name": "restuarants",
+  "version": "1.0.0",
+  "description": "Choose your home food",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "set NODE_ENV=production && node server",
+    "dev": "nodemon server"
+  },
+  "author": "Ajay",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^13.9.1",
+    "dotenv": "^8.2.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2",
+    "uuid": "^7.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
