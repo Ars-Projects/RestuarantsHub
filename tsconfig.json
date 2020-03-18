@@ -3,10 +3,17 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
-    "watch": true,
+    "watch": false,
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+        "*": [
+            "node_modules/*",
+            "src/types/*"
+        ]
+    }
   },
   "lib": ["es2015", "dom"]
 }
