@@ -5,15 +5,24 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "set NODE_ENV=production && node server",
-    "dev": "tsc && nodemon"
+    "dev": "concurrently -k -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"npm run watch-ts\" \"nodemon ./dist/server.js\"",
+    "watch-ts": "tsc -w"
   },
   "author": "Ajay",
   "license": "MIT",
   "dependencies": {
     "@types/node": "^13.9.1",
+    "asyncawait": "^3.0.0",
+    "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.9.5",
     "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "slugify": "^1.4.0",
     "uuid": "^7.0.2"
   },
   "devDependencies": {
