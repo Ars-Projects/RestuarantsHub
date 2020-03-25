@@ -4,29 +4,32 @@
 				"name": "Idly Vada",
 				"price": "40",
 				"description":"very delicious",
-				"isAvailable":true
+				"isAvailable":true,
+				"avgrating":"8"
 			},
 			{
 				"name": "Dosa",
 				"price": "50",
 				"description":"very delicious",
-				"isAvailable":true
+				"isAvailable":true,
+				"avgrating":"8.5"
 			},
 			{
 				"name": "Full Meals",
 				"price": "60",
 				"description":"very delicious",
-				"isAvailable":true
+				"isAvailable":true,
+				"avgrating":"7"
 			},
 			{
 				"name": "Coffe/Tea",
 				"price": "10",
 				"description":"very delicious",
-				"isAvailable":true
+				"isAvailable":true,
+				"avgrating":"9"
 			}],
-		"restuarent":"5d713995b721c3bb38c1f5d0",
-		"popular":["dosa","Idly Vada"]
-
-	}	
+	"favourites":["IdlyVada_id","Dosa_id"],  	//Calculated based on menu rating
+	"restuarent":"5d713995b721c3bb38c1f5d0"
+	}
 ]
 	
