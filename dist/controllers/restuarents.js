@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const ErrorResponses = require('../utils/errorResponse');
 const Restuarent = require('../models/Restuarent');
-const asyncHandler = require("../middleware/async");
+const asyncHandler = require('../middleware/async');
 //@desc  Get all Restuarents
 //@route GET /api/v1/restuarents
 //@access Public
@@ -37,7 +37,7 @@ exports.getRestuarent = asyncHandler((req, res, next) => __awaiter(this, void 0,
 //@access Private
 exports.createRestuarent = asyncHandler((req, res, next) => __awaiter(this, void 0, void 0, function* () {
     const restuarent = yield Restuarent.create(req.body);
-    res.status(200).json({ Success: true, data: restuarent });
+    res.status(201).json({ Success: true, data: restuarent });
 }));
 //@desc  Update Bootcamp
 //@route PUT /api/v1/restuarents/:id

@@ -58,22 +58,9 @@ const RestuarentSchema = new mongoose_1.default.Schema({
         zipcode: String,
         country: String
     },
-    // careers: {
-    //   // Array of strings
-    //   type: [String],
-    //   required: true,
-    //   enum: [
-    //     "South Indian",
-    //     "North Indian",
-    //     "Continental",
-    //     "Chats",
-    //     "Cafe shops",
-    //     "Juices",
-    //     "Chinese",
-    //     "Sushi",
-    //     "Others"
-    //   ]
-    // },
+    discount: {
+        type: Number,
+    },
     averageRating: {
         type: Number,
         min: [1, "Rating must be at least 1"],
@@ -103,6 +90,11 @@ const RestuarentSchema = new mongoose_1.default.Schema({
         type: Date,
         default: Date.now
     },
+    user: {
+        type: mongoose_1.default.Schema.ObjectId,
+        ref: "User",
+        required: true
+    }
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }

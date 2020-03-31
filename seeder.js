@@ -10,6 +10,8 @@ dotenv.config({ path: "./config/config.env" });
 //load models
 const Restuarent = require("./dist/models/Restuarent");
 const Menu = require("./dist/models/Menu");
+const Order = require("./dist/models/Order");
+const User = require("./dist/models/User");
 
 //Connect to DB
 const conn = mongoose.connect(process.env.MongoURI, {
@@ -21,15 +23,16 @@ const conn = mongoose.connect(process.env.MongoURI, {
 
   //Read JSON files
   const restuarents = JSON.parse(fs.readFileSync(`${__dirname}/_data/restuarents.json`));
-
-  const menus = JSON.parse(
-    fs.readFileSync(`${__dirname}/_data/menus.json`, "utf-8")
-  );
+  const menus = JSON.parse(fs.readFileSync(`${__dirname}/_data/menus.json`));
+  const orders = JSON.parse(fs.readFileSync(`${__dirname}/_data/orders.json`));
+  const users = JSON.parse(fs.readFileSync(`${__dirname}/_data/users.json`));
 
   const importData = async() => {
       try{
         await Restuarent.create(restuarents);
         await Menu.create(menus);
+        await Order.create(orders);
+        await User.create(users);
         console.log("Data imported...");
         process.exit();
       }catch(err){

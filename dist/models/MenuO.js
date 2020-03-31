@@ -35,5 +35,5 @@ const MenuSchema = new mongoose_1.default.Schema({
         required: true
     },
 });
-module.exports = mongoose_1.default.model('Menu', MenuSchema);
-//# sourceMappingURL=Menu.js.map
+module.exports = mongoose_1.default.model('MenuO', MenuSchema);
+//# sourceMappingURL=MenuO.js.map

@@ -19,10 +19,9 @@ if (process.env.NODE_ENV === "development") {
 }
 //Mount Routers
 app.use("/api/v1/restuarents", restuarents);
+app.use("/api/v1/menus", menus);
+app.use("/api/v2/menus", menus);
 const PORT = process.env.PORT || 4000;
-// app.get("/", (req, res) => {
-//   res.send("The sedulous hyena ate the antelope!");
-// });
 const server = app.listen(PORT, () => {
     console.log(`Server running on ${process.env.NODE_ENV} mode on ${PORT}`);
 });

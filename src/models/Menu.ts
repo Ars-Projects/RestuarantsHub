@@ -34,11 +34,11 @@ const MenuSchema = new mongoose.Schema({
         ref: "Restuarent",
         required: true
       },
-    orders: {
-        type: mongoose.Schema.ObjectId,
-        ref: "Orders",
-        required: true
-      }
+    // orders: {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: "Order",
+    //     required: true
+    //   }
 });
 
 

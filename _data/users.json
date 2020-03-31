@@ -1,11 +1,11 @@
 [
 	{
-		"_id": "5d7a514b5d2c12c7449be042",
+		"_id": "5d7a514b5d2c12c7449be052",
 		"name": "Admin Account",
-		"email": "admin@gmail.com",
+		"email": "admin01243@gmail.com",
 		"role": "customer",
 		"password": "123456",
-		"address":"",
-		"offer":"10" //calculated based on his freequesncy of ordering
+		"address":"5th A cross Anubhavnagar Bangalore",
+		"offer":"10" 
 	}
 ]
