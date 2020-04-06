@@ -8,8 +8,8 @@ const Restuarent = require('../models/Restuarent');
 //@route POST /api/v1/restuarents/:restuarentId/orders
 //@access Public
 exports.createOrder = asyncHandler(async (req, res, next) => {
-  req.body.bootcamp = req.params.bootcampId;
-  req.body.user = req.user.id;
+  req.body.restuarent = req.params.restuarentId;
+  // req.body.user = req.user.id;
   const restuarent = await Restuarent.findById(req.params.restuarentId);
 
   if (!restuarent) {
@@ -28,18 +28,18 @@ exports.createOrder = asyncHandler(async (req, res, next) => {
 
 
 //@desc  Update order
-//@route PUT /api/v1/orders/:id
-//@access Public
+//@route PUT /api/v1/orders/:orderId
+//@access Public/Private
 exports.updateOrder = asyncHandler(async (req, res, next) => {
-  let order = await Order.findById(req.params.id);
+  let order = await Order.findById(req.params.orderId);
 
   if (!order) {
     return next(
-      new ErrorResponse(`No order with id of ${req.params.id}`, 404)
+      new ErrorResponse(`No order with id of ${req.params.orderId}`, 404)
     );
   }
 
-  order = await Order.findByIdAndUpdate(req.params.id, req.body, {
+  order = await Order.findByIdAndUpdate(req.params.orderId, req.body, {
     new: true,
     runValidators: true
   });
@@ -50,15 +50,15 @@ exports.updateOrder = asyncHandler(async (req, res, next) => {
   });
 });
 
-//@desc  Delete review
-//@route DELETE /api/v1/orders/:id
-//@access Private
-exports.deleteReview = asyncHandler(async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
+//@desc  Delete order
+//@route DELETE /api/v1/orders/:orderId
+//@access Private/Public(within time)
+exports.deleteOrder = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.orderId);
 
   if (!order) {
     return next(
-      new ErrorResponse(`No order with id of ${req.params.id}`, 404)
+      new ErrorResponse(`No order with id of ${req.params.orderId}`, 404)
     );
   }
 
@@ -76,25 +76,27 @@ exports.deleteReview = asyncHandler(async (req, res, next) => {
 });
 
 //@desc  Add review
-//@route POST /api/v1/orders/:id
-//@access Private
+//@route POST /api/v1/orders/reviews/:orderId
+//@access Public
 exports.addReview = asyncHandler(async (req, res, next) => {
-  req.body.restuarent = req.params.restuarentId;
-  req.body.user = req.user.id;
-  const restuarent = await Restuarent.findById(req.params.restuarentId);
+  // req.body.user = req.user.id;
 
-  if (!restuarent) {
+  let order = await Order.findById(req.params.orderId);
+
+  if (!order) {
     return next(
-      new ErrorResponse(`No restuarent with id of ${req.params.restuarentId}`, 404)
+      new ErrorResponse(`No order with id of ${req.params.orderId}`, 404)
     );
   }
 
-   let order = await Order.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
-
-
+   order = await Order.findByIdAndUpdate(req.params.orderId, req.body, {
+     new: true,
+     runValidators: true
+   });
+  
+   //Update the ratings after the review
+   Order.getAvgMenuRating(order.menu);
+  
   res.status(201).json({
     success: true,
     data: order
@@ -102,14 +104,14 @@ exports.addReview = asyncHandler(async (req, res, next) => {
 });
 
 //@desc  Update review
-//@route PUT /api/v1/orders/:id
-//@access Private
+//@route PUT /api/v1/orders/reviews/:orderId
+//@access Public
 exports.updateReview = asyncHandler(async (req, res, next) => {
-  let order = await Order.findById(req.params.id);
+  let order = await Order.findById(req.params.orderId);
 
   if (!order) {
     return next(
-      new ErrorResponse(`No review with id of ${req.params.id}`, 404)
+      new ErrorResponse(`No review with id of ${req.params.orderId}`, 404)
     );
   }
 
@@ -118,10 +120,13 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
 //     return next(new ErrorResponse(`Not authorised to update review`, 401));
 //   }
 
-  order = await order.findByIdAndUpdate(req.params.id, req.body, {
+  order = await Order.findByIdAndUpdate(req.params.orderId, req.body, {
     new: true,
     runValidators: true
   });
+
+  //Update the ratings after the review
+  Order.getAvgMenuRating(order.menu);
 
   res.status(201).json({
     success: true,
@@ -130,7 +135,7 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
 });
 
 //@desc  Delete review
-//@route DELETE /api/v1/reviews/:orderId
+//@route DELETE /api/v1/orders/reviews/:orderId
 //@access Private
 exports.deleteReview = asyncHandler(async (req, res, next) => {
   let order = await Order.findById(req.params.orderId);
@@ -157,6 +162,8 @@ exports.deleteReview = asyncHandler(async (req, res, next) => {
       runValidators: true
     }
   );
+  //Update the ratings after the review
+  Order.getAvgMenuRating(order.menu);
  
  res.status(201).json({
    success: true,

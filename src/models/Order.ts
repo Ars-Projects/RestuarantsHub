@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+const ObjectID = require('mongodb').ObjectID;
+const Menu = require('../models/Menu');
 
 const OrderSchema = new mongoose.Schema({
     order:{type: String,
@@ -15,10 +17,8 @@ const OrderSchema = new mongoose.Schema({
     actualDeliveryTime: Number,
     deliveryAddress:{type: String,
         required: [true, 'Please add address']},
-	review: {type: String,
-        required: [true, 'Please add review']},
-	rating: {type: Number,
-        required: [true, 'Please add rating']},
+	review: String,
+	rating: Number,
     restuarent: {
             type: mongoose.Schema.ObjectId,
             ref: "Restuarent",
@@ -35,5 +35,46 @@ const OrderSchema = new mongoose.Schema({
         required: true
     }
 });
+
+//Update the menu ratings after every order
+OrderSchema.statics.getAvgMenuRating = async function (menuId) {
+  const obj = await this.aggregate([
+    {
+      $match: {
+          menu: {
+            $in: [ObjectID(menuId)],
+          },
+        },
+    },
+    {
+      $group: {
+        _id: '$menu',
+        averageRatings: { $avg: '$rating' },
+      },
+    },
+  ]);
+  try {
+    await this.model('Menu').findOneAndUpdate(
+      { 'menu._id': menuId },
+      { $set: { 'menu.$.avgrating': obj[0].averageRatings } }
+    );
+  } catch (err) {
+    console.error(err);
+  }
+  // Updating the ratings for the restuarent 
+  let menu = await Menu.find({ 'menu._id': menuId });
+  Menu.getAverageRating(menu[0].restuarent);
+};
+
+//Call getAverageCost after save
+OrderSchema.post('save', function () {
+  this.constructor.getAvgMenuRating(this.menu);
+});
+
+//Call getAverageCost before remove
+OrderSchema.pre('remove', function () {
+  this.constructor.getAvgMenuRating(this.menu);
+});
+
 
 module.exports = mongoose.model('Order',OrderSchema);

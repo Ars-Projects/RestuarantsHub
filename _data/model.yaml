@@ -1,0 +1,63 @@
+components:  
+  schemas:
+    Restuarent:
+      properties:
+        name:
+          type: string
+          required: true
+        slug:
+          type: string
+        description:
+          type: string
+        website:
+          type: string  
+        phone:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+        location:
+          type: object
+          enum: point
+          properties:
+            coordinates:
+              type: number
+              index: 2dsphere
+            formattedAddress: 
+              type: string
+            Street: 
+              type: string
+            city: 
+              type: string
+            state: 
+              type: string
+            zipcode:
+              type: string
+            country: 
+              type: string
+        discount:
+          type: number
+        averageRating:
+          type: number
+        bar:
+          type: boolean
+        nonVeg:
+          type: boolean
+        tableBooking:
+          type: boolean
+        acceptCard:
+          type: boolean
+        photo:
+          type: string
+        createdAt:
+          type: Date
+        user:
+          type: object
+
+
+
+      
+    

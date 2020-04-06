@@ -1,10 +1,20 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const slugify_1 = __importDefault(require("slugify"));
+const geocoder = require('../utils/geocoder');
 const RestuarentSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
@@ -103,6 +113,29 @@ const RestuarentSchema = new mongoose_1.default.Schema({
 RestuarentSchema.pre('save', function (next) {
     this.slug = slugify_1.default(this.name, { lower: true });
     next();
+});
+//Geocode & create location field
+RestuarentSchema.pre('save', function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const loc = yield geocoder.geocode(this.address);
+        this.location = {
+            type: 'Point',
+            coordinates: [loc[0].longitude, loc[0].latitude],
+            formattedAddress: loc[0].formattedAddress,
+            street: loc[0].streetName,
+            city: loc[0].city,
+            state: loc[0].stateCode,
+            zipcode: loc[0].zipcode,
+            country: loc[0].countryCode,
+        };
+    });
+});
+//Reverse populate with virtuals
+RestuarentSchema.virtual('menus', {
+    ref: 'Menu',
+    localField: '_id',
+    foreignField: 'restuarent',
+    justOne: false
 });
 module.exports = mongoose_1.default.model('Restuarent', RestuarentSchema);
 //# sourceMappingURL=Restuarent.js.map

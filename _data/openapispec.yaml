@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: "API"
+  version: "1.0.0"
+
+servers:
+  - url: localhost:5000/api/v1
+
+# Endpoints
+paths:
+  /restuarents:
+    # Get all restuarent list
+    get:
+      operationId: getRestuarents
+      description: Gets list of restuarents
+      # Query parameters
+      parameters:
+        # sort retreiving data
+        - $ref: '#/components/parameters/sort'
+        # sort retreiving data
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/select'
+        - $ref: '#/components/parameters/page'
+      # security:
+      #   - basicAuth: [ ]    
+      responses:
+      # Response code
+        200:
+          description: details of restuarent list
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/restuarents'                  
+        400:
+          description: Bad request
+
+components:
+  parameters:
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        description: 'The direction of the sort'
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: number
+        description: 'Limit retreiving data'
+    select:
+      name: select
+      in:  query
+      schema:
+        type: string
+        description: 'Select fields'
+    page:
+      name: page
+      in:  query
+      schema:
+        type: number
+        description: 'specify page to be displayed'
+    
+  schemas:
+    restuarents:
+      properties:
+        success:
+          type: boolean
+        count:
+          type: number
+        pagination:
+          $ref: '#/components/schemas/pagination'
+        data:
+          $ref: '#/components/schemas/Restuarent'
+
+    pagination:
+      properties:
+        next:
+          type: object
+        prev:
+          type: object
+    
+    Restuarent:
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        website:
+          type: string  
+        phone:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        address:
+          type: string
+        location:
+          type: object
+          properties:
+            coordinates:
+              type: number
+            formattedAddress: 
+              type: string
+            Street: 
+              type: string
+            city: 
+              type: string
+            state: 
+              type: string
+            zipcode:
+              type: string
+            country: 
+              type: string
+        discount:
+          type: number
+        averageRating:
+          type: number
+        bar:
+          type: boolean
+        nonVeg:
+          type: boolean
+        tableBooking:
+          type: boolean
+        acceptCard:
+          type: boolean
+        photo:
+          type: string
+        createdAt:
+          type: number
+        user:
+          type: object
+
+
+
+
+  
+
+        
+
+                   
+                   

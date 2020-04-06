@@ -1,15 +1,31 @@
 import express from 'express';
 
-const { getMenu, addMenu, updateMenu, deleteMenu } = require('../controllers/menus');
+const {
+  getMenu,
+  getFavouriteMenu,
+  addMenu,
+  updateMenu,
+  deleteMenu
+} = require('../controllers/menus');
+
+const Menu = require('../models/Menu');
 
 const router = express.Router({ mergeParams: true });
 
+const advancedResults = require('../middleware/advancedResults');
+
 router
   .route('/')
-  .get(getMenu)
+  .get(
+    advancedResults(Menu, {
+      path: 'restuarent',
+      select: 'name description averageRating'
+    }),
+    getMenu
+  )
   .post(addMenu);
 
-
+router.route('/favourites').get(getFavouriteMenu);
   
 router
   .route('/:menuId')

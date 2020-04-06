@@ -1,35 +1,77 @@
 [
 	{
 	"menu":	[{
+        "_id": "5e819d7544b12470549a3535",
 				"name": "Idly Vada",
-				"price": "40",
+				"price": 40,
 				"description":"very delicious",
 				"isAvailable":true,
-				"avgrating":"8"
+				"avgrating":6
 			},
 			{
+        "_id": "5e819d7544b12470549a3536",
 				"name": "Dosa",
-				"price": "50",
+				"price": 50,
 				"description":"very delicious",
 				"isAvailable":true,
-				"avgrating":"8.5"
+				"avgrating":7
 			},
 			{
-				"name": "Full Meals",
-				"price": "60",
-				"description":"very delicious",
-				"isAvailable":true,
-				"avgrating":"7"
-			},
+        "_id": "5e819d7544b12470549a3537",
+        "name": "Full Meals",
+        "price": 60,
+        "description": "very delicious",
+        "isAvailable": true,
+        "avgrating": 7
+      },
 			{
-				"name": "Coffe/Tea",
-				"price": "10",
-				"description":"very delicious",
-				"isAvailable":true,
-				"avgrating":"9"
-			}],
+        "_id": "5e819d7544b12470549a3538",
+        "name": "Coffe/Tea",
+        "price": 10,
+        "description": "very delicious",
+        "isAvailable": true,
+        "avgrating": 6
+      }],
 	"favourites":["IdlyVada_id","Dosa_id"],
 	"restuarent":"5d713995b721c3bb38c1f5d0"
-	}
+	},
+	{
+    "menu": [
+      {
+        "_id": "5e819d7544b12470549a3539",
+        "name": "Biriyani",
+        "price": "200",
+        "description": "very delicious",
+        "isAvailable": true,
+        "avgrating": "9"
+      },
+      {
+        "_id": "5e819d7544b12470549a3540",
+        "name": "methi pulav",
+        "price": "120",
+        "description": "very delicious",
+        "isAvailable": true,
+        "avgrating": "8.5"
+      },
+      {
+        "_id": "5e819d7544b12470549a3541",
+        "name": "north Full Meals",
+        "price": "130",
+        "description": "very delicious",
+        "isAvailable": true,
+        "avgrating": "7"
+      },
+      {
+        "_id": "5e819d7544b12470549a3542",
+        "name": "Mint Tea",
+        "price": "40",
+        "description": "very delicious",
+        "isAvailable": true,
+        "avgrating": "9"
+      }
+    ],
+    "favourites": ["Biriyani", "methi pulav"],
+    "restuarent": "5d713a66ec8f2b88b8f830b8"
+  }
 ]
 	

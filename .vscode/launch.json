@@ -12,10 +12,10 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/src/server.js",
+            "program": "${workspaceFolder}/dist/server.js",
             
             "runtimeArgs": ["run-script", "debug"],
-            "port": 4000
+            "port": 5000
         }
     ]
 }

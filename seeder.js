@@ -44,6 +44,8 @@ const conn = mongoose.connect(process.env.MongoURI, {
     try{
       await Restuarent.deleteMany();
       await Menu.deleteMany();
+      await Order.deleteMany();
+      await User.deleteMany();
       console.log("Data deleted...");
       process.exit();
     }catch(err){

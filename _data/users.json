@@ -1,11 +1,29 @@
 [
-	{
-		"_id": "5d7a514b5d2c12c7449be052",
-		"name": "Admin Account",
-		"email": "admin01243@gmail.com",
-		"role": "customer",
-		"password": "123456",
-		"address":"5th A cross Anubhavnagar Bangalore",
-		"offer":"10" 
-	}
+  {
+    "_id": "5d7a514b5d2c12c7449be052",
+    "name": "Admin Account",
+    "email": "admin01243@gmail.com",
+    "role": "admin",
+    "password": "123456",
+    "address": "5th A cross Anubhavnagar Bangalore",
+    "offer": 10
+  },
+  {
+    "_id": "5d7a514b5d2c12c7449be053",
+    "name": "sunil",
+    "email": "sunil01243@gmail.com",
+    "role": "customer",
+    "password": "1234568",
+    "address": "5th A cross chandralayout Bangalore",
+    "offer": 10
+  },
+  {
+    "_id": "5d7a514b5d2c12c7449be054",
+    "name": "shankar",
+    "email": "shankar01243@gmail.com",
+    "role": "customer",
+    "password": "1234567",
+    "address": "5th A cross vijaynagar Bangalore",
+    "offer": 10
+  }
 ]

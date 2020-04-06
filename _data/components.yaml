@@ -1,0 +1,79 @@
+components:
+  parameters:
+    sort:
+      name: sort
+      in: query
+      required: false
+      type: string
+      description: 'The direction of the sort'
+    limit:
+      name: limit
+      in: query
+      required: false
+      type: number
+      description: 'Limit retreiving data'
+    select:
+      name: select
+      in:  query
+      required:  false
+      type: string
+      description: Return restuarent with selected fields
+    page:
+      name: page
+      in:  query
+      required:  false
+      type: number
+      description: specifies the page to be shown
+  
+
+  pagination:
+    type: object
+    properties:
+      next:
+        type: object
+      prev:
+        type: object
+  
+  schemas:
+    restuarents:
+      properties:
+        success:
+          type: boolean
+        count:
+          type: number
+        pagination:
+          $ref: '#/components/pagination'
+        data:
+          $ref: './model.yaml#/components/schemas/Restuarent'
+        
+          
+
+  Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            name:
+              type: string
+            message:
+              type: string
+            data:
+              type: array
+              items:
+                type: object
+          required:
+            - name
+            - message
+            - data
+      required:
+        - error
+  # securitySchemes:
+  #   bearerAuth:            # arbitrary name for the security scheme
+  #     type: http
+  #     scheme: bearer
+  #     bearerFormat: JWT         
+
+  # responses:
+  #   UnauthorizedError:
+  #     description: Access token is missing or invalid    

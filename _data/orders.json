@@ -1,14 +1,87 @@
 [
 	{
 		"order": "Idly Vada",
-		"price":"40",
-		"discount":"10",
-		"finalPrice":"36",
+		"price":40,
+		"discount":10,
+		"finalPrice":36,
 		"deliveryAddress":"5th A cross Anubhavanagar Bangalore",
 		"review": "Very good food",
-		"rating": "8",
+		"rating": 8,
 		"restuarent": "5d713995b721c3bb38c1f5d0",
-		"menu":"5e7b9c1899d50c38eb0d1e0e",
-		"user": "5d7a514b5d2c12c7449be052"
-	}
+		"menu":"5e819d7544b12470549a3535",
+		"user": "5d7a514b5d2c12c7449be053"
+	},
+	{
+    "order": "Idly Vada",
+    "price": 40,
+    "discount": 10,
+    "finalPrice": 36,
+    "deliveryAddress": "5th A cross Anubhavanagar Bangalore",
+    "review": "Very good food",
+    "rating": 8,
+    "restuarent": "5d713995b721c3bb38c1f5d0",
+    "menu": "5e819d7544b12470549a3535",
+    "user": "5d7a514b5d2c12c7449be052"
+  },
+  {
+    "order": "Dosa",
+    "price": 40,
+    "discount": 10,
+    "finalPrice": 36,
+    "deliveryAddress": "5th A cross Anubhavanagar Bangalore",
+    "review": "Very good food",
+    "rating": 8,
+    "restuarent": "5d713995b721c3bb38c1f5d0",
+    "menu": "5e819d7544b12470549a3536",
+    "user": "5d7a514b5d2c12c7449be052"
+  },
+  {
+    "order": "Dosa",
+    "price": 40,
+    "discount": 10,
+    "finalPrice": 36,
+    "deliveryAddress": "5th A cross Anubhavanagar Bangalore",
+    "review": "Very good food",
+    "rating": 8,
+    "restuarent": "5d713995b721c3bb38c1f5d0",
+    "menu": "5e819d7544b12470549a3536",
+    "user": "5d7a514b5d2c12c7449be053"
+  },
+  {
+    "order": "Idly Vada",
+    "price": 40,
+    "discount": 10,
+    "finalPrice": 36,
+    "deliveryAddress": "5th A cross Anubhavanagar Bangalore",
+    "review": "Very good food",
+    "rating": 8,
+    "restuarent": "5d713995b721c3bb38c1f5d0",
+    "menu": "5e819d7544b12470549a3535",
+    "user": "5d7a514b5d2c12c7449be052"
+  },
+  {
+    "order": "north Full Meals",
+    "price": 130,
+    "discount": 10,
+    "finalPrice": 117,
+    "deliveryAddress": "5th A cross Anubhavanagar Bangalore",
+    "review": "Very good food",
+    "rating": 8,
+    "restuarent": "5d713a66ec8f2b88b8f830b8",
+    "menu": "5e819d7544b12470549a3541",
+    "user": "5d7a514b5d2c12c7449be053"
+  },
+  {
+    "order": "Mint Tea",
+    "price": 40,
+    "discount": 10,
+    "finalPrice": 36,
+    "deliveryAddress": "5th A cross Anubhavanagar Bangalore",
+    "review": "Very good food",
+    "rating": 8,
+    "restuarent": "5d713a66ec8f2b88b8f830b8",
+    "menu":"5e819d7544b12470549a3542",
+    "user": "5d7a514b5d2c12c7449be053"
+  }
+
 ]

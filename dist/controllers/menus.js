@@ -9,21 +9,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Menu = require('../models/Menu');
+let Menu = require('../models/Menu');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Restuarent = require('../models/Restuarent');
+const ObjectID = require('mongodb').ObjectID;
 //@desc  Get Menu of a restuarent
 //@route GET /api/v1/restuarents/:restuarentId/menus
 //@route GET /api/v1/menus
 //@access Public
 exports.getMenu = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.params.restuarentId) {
-        const menu = yield Menu.find({ restuarent: req.params.restuarentId });
+        const menu = yield Menu.find({
+            restuarent: req.params.restuarentId
+        }).populate({
+            path: 'restuarent',
+            select: 'name description'
+        });
         res.status(200).json({ Success: true, data: menu });
     }
     else {
-        //get all menu based on limit, ratings, etc
+        res.status(200).json(res.advancedResults);
+    }
+}));
+//@desc  Get Favourites/fast moving Menu of a restuarent
+//@route GET /api/v1/restuarents/:restuarentId/menus/favourites
+//@access Public
+exports.getFavouriteMenu = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.params.restuarentId) {
+        const obj = yield Menu.aggregate([
+            {
+                $match: {
+                    restuarent: {
+                        $in: [ObjectID(req.params.restuarentId)],
+                    },
+                },
+            },
+            { $unwind: '$menu' },
+            {
+                $sort: { 'menu.avgrating': -1 },
+            },
+            {
+                $group: { _id: '$_id', menu: { $push: '$menu' } },
+            },
+        ]);
+        res.status(200).json({ Success: true, data: obj[0].menu });
+    }
+    else {
+        return next(new ErrorResponse(`No menu with id of ${req.params.restuarentId}`, 404));
     }
 }));
 //@desc Add menu
@@ -46,7 +79,7 @@ exports.addMenu = asyncHandler((req, res, next) => __awaiter(void 0, void 0, voi
     //         )
     //     );
     // }
-    const menu = yield Menu.update({ restuarent: req.params.restuarentId }, { $push: { menu: req.body } });
+    const menu = yield Menu.updateOne({ restuarent: req.params.restuarentId }, { $push: { menu: req.body } });
     if (!menu) {
         return next(new ErrorResponse(`No menu with id of ${req.params.restuarentId}`, 404));
     }
@@ -64,11 +97,12 @@ exports.updateMenu = asyncHandler((req, res, next) => __awaiter(void 0, void 0, 
     if (!restuarent) {
         return next(new ErrorResponse(`No restuarent with the id of ${req.params.restuarentId}`, 404));
     }
-    const menu = yield Menu.update({ restuarent: req.params.restuarentId }, { $pull: { menu: { _id: req.params.menuId } } }, { multi: true });
+    const menu = yield Menu.updateOne({ restuarent: req.params.restuarentId }, { $pull: { menu: { _id: req.params.menuId } } }, { multi: true });
     if (!menu) {
         return next(new ErrorResponse(`No menu with id of ${req.params.menuId}`, 404));
     }
-    yield Menu.update({ restuarent: req.params.restuarentId }, { $push: { menu: req.body } });
+    req.body._id = req.params.menuId;
+    yield Menu.updateOne({ restuarent: req.params.restuarentId }, { $push: { menu: req.body } });
     res.status(200).json({
         success: true,
         data: req.body
@@ -78,7 +112,7 @@ exports.updateMenu = asyncHandler((req, res, next) => __awaiter(void 0, void 0, 
 // @route     DELETE /api/v1/restuarents/:restuarentId/menus/:menuId
 // @access    Private
 exports.deleteMenu = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const menu = yield Menu.update({ restuarent: req.params.restuarentId }, { $pull: { menu: { _id: req.params.menuId } } }, { multi: true });
+    const menu = yield Menu.updateOne({ restuarent: req.params.restuarentId }, { $pull: { menu: { _id: req.params.menuId } } }, { multi: true });
     if (!menu) {
         return next(new ErrorResponse(`No course with the id of ${req.params.id}`, 404));
     }

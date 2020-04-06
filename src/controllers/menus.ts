@@ -1,9 +1,9 @@
 export {}
-const Menu = require('../models/Menu');
+let Menu = require('../models/Menu');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Restuarent = require('../models/Restuarent');
-
+const ObjectID = require('mongodb').ObjectID;
 
 //@desc  Get Menu of a restuarent
 //@route GET /api/v1/restuarents/:restuarentId/menus
@@ -11,10 +11,44 @@ const Restuarent = require('../models/Restuarent');
 //@access Public
 exports.getMenu = asyncHandler(async (req, res, next) => {
   if (req.params.restuarentId) {
-    const menu = await Menu.find({ restuarent: req.params.restuarentId });
+    const menu = await Menu.find({
+      restuarent: req.params.restuarentId
+    }).populate({
+      path: 'restuarent',
+      select: 'name description'
+    });
     res.status(200).json({ Success: true, data: menu });
   } else {
-    //get all menu based on limit, ratings, etc
+     res.status(200).json(res.advancedResults);
+  }
+});
+
+//@desc  Get Favourites/fast moving Menu of a restuarent
+//@route GET /api/v1/restuarents/:restuarentId/menus/favourites
+//@access Public
+exports.getFavouriteMenu = asyncHandler(async (req, res, next) => {
+  if (req.params.restuarentId) {
+    const obj = await Menu.aggregate([
+      {
+        $match: {
+          restuarent: {
+            $in: [ObjectID(req.params.restuarentId)],
+          },
+        },
+      },
+      { $unwind: '$menu' },
+      {
+        $sort: { 'menu.avgrating': -1 },
+      },
+      {
+        $group: { _id: '$_id', menu: { $push: '$menu' } },
+      },
+    ]);
+    res.status(200).json({ Success: true, data: obj[0].menu });
+  } else {
+    return next(
+      new ErrorResponse(`No menu with id of ${req.params.restuarentId}`, 404)
+    );
   }
 });
 
@@ -47,7 +81,7 @@ exports.addMenu = asyncHandler(async (req, res, next) => {
   //     );
   // }
 
-  const menu = await Menu.update({restuarent: req.params.restuarentId }, 
+  const menu = await Menu.updateOne({restuarent: req.params.restuarentId }, 
     {$push: {menu: req.body}});
 
   if (!menu) {
@@ -79,7 +113,7 @@ if (!restuarent) {
   );
 }
 
-const menu = await Menu.update(
+const menu = await Menu.updateOne(
   { restuarent: req.params.restuarentId },
   { $pull: { menu: { _id: req.params.menuId } } },
   { multi: true }
@@ -91,7 +125,9 @@ if (!menu) {
   );
 }
 
-await Menu.update(
+req.body._id = req.params.menuId;
+
+await Menu.updateOne(
   { restuarent: req.params.restuarentId },
   { $push: { menu: req.body } }
 );
@@ -105,7 +141,7 @@ res.status(200).json({
 // @route     DELETE /api/v1/restuarents/:restuarentId/menus/:menuId
 // @access    Private
 exports.deleteMenu = asyncHandler(async (req, res, next) => {
-  const menu = await Menu.update(
+  const menu = await Menu.updateOne(
   { restuarent: req.params.restuarentId },
   { $pull: { menu: { _id: req.params.menuId } } },
   { multi: true });
