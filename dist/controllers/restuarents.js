@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path = require('path');
 const ErrorResponse = require('../utils/errorResponse');
 const Restuarent = require('../models/Restuarent');
 const asyncHandler = require('../middleware/async');
@@ -39,26 +40,26 @@ exports.createRestuarent = asyncHandler((req, res, next) => __awaiter(void 0, vo
     res.status(201).json({ Success: true, data: restuarent });
 }));
 //@desc  Update restuarent
-//@route PUT /api/v1/restuarents/:id
+//@route PUT /api/v1/restuarents/:restuarentId
 //@access Private
 exports.updateRestuarent = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    let restuarent = yield Restuarent.findById(req.params.id);
+    let restuarent = yield Restuarent.findById(req.params.restuarentId);
     if (!restuarent) {
-        return next(new ErrorResponse(`Restuarent not found with id of ${req.params.id}`, 404));
+        return next(new ErrorResponse(`Restuarent not found with id of ${req.params.restuarentId}`, 404));
     }
-    restuarent = yield Restuarent.findByIdAndUpdate(req.params.id, req.body, {
+    restuarent = yield Restuarent.findByIdAndUpdate(req.params.restuarentId, req.body, {
         new: true,
-        runValidators: true
+        runValidators: true,
     });
     res.status(200).json({ success: true, data: restuarent });
 }));
 //@desc  Delete new Restuarent
-//@route DELETE /api/v1/restuarents/:id
+//@route DELETE /api/v1/restuarents/:restuarentId
 //@access Private
 exports.deleteRestuarent = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const restuarent = yield Restuarent.findById(req.params.id);
+    const restuarent = yield Restuarent.findById(req.params.restuarentId);
     if (!restuarent) {
-        return next(new ErrorResponse(`Restuarent not found with id of ${req.params.id}`, 404));
+        return next(new ErrorResponse(`Restuarent not found with id of ${req.params.restuarentId}`, 404));
     }
     restuarent.remove();
     res.status(200).json({ success: true, data: {} });
@@ -83,6 +84,51 @@ exports.getRestuarentsInRadius = asyncHandler((req, res, next) => __awaiter(void
         success: true,
         count: hotels.length,
         data: hotels
+    });
+}));
+// @desc      Upload photo for restuarent
+// @route     PUT /api/v1/restuarents/:restuarentId/photo
+// @access    Private
+exports.restuarentPhotoUpload = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const restuarent = yield Restuarent.findById(req.params.restuarentId);
+    if (!restuarent) {
+        return next(new ErrorResponse(`Restuarent not found with id of ${req.params.restuarentId}`, 404));
+    }
+    // Make sure user is bootcamp owner
+    // if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
+    //   return next(
+    //     new ErrorResponse(
+    //       `User ${req.user.id} is not authorized to delete this bootcamp`,
+    //       401
+    //     )
+    //   );
+    // }
+    if (!req.files) {
+        return next(new ErrorResponse(`Please upload a file`, 400));
+    }
+    const file = req.files.file;
+    //Make sure the image is the photo
+    if (!file.mimetype.startsWith('image')) {
+        return next(new ErrorResponse(`Please upload a image file`, 400));
+    }
+    //Check filesize
+    if (file.size > process.env.MAX_FILE_UPLOAD) {
+        return next(new ErrorResponse(`Please upload a image less than ${process.env.MAX_FILE_UPLOAD}`, 400));
+    }
+    //Create custom filename
+    file.name = `Restuarent_${restuarent.name}_${restuarent._id}${path.parse(file.name).ext}`;
+    file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, (err) => __awaiter(void 0, void 0, void 0, function* () {
+        if (err) {
+            console.error(err);
+            return next(new ErrorResponse(`Problem with file upload`, 500));
+        }
+        yield Restuarent.findByIdAndUpdate(req.params.restuarentId, {
+            photo: file.name,
+        });
+    }));
+    res.status(200).json({
+        success: true,
+        data: file.name,
     });
 }));
 //# sourceMappingURL=restuarents.js.map

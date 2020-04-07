@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const { getRestuarents, getRestuarent, createRestuarent, updateRestuarent, deleteRestuarent, getRestuarentsInRadius, } = require('../controllers/restuarents');
+const { getRestuarents, getRestuarent, createRestuarent, updateRestuarent, deleteRestuarent, getRestuarentsInRadius, restuarentPhotoUpload, } = require('../controllers/restuarents');
 const Restuarent = require('../models/Restuarent');
 // Include other resource routers
 const menuRouter = require("./menus");
@@ -16,6 +16,9 @@ router.use("/:restuarentId/menus", menuRouter);
 router.use('/:restuarentId/orders', orderRouter);
 router.route('/radius/:zipcode/:distance').get(getRestuarentsInRadius);
 router
+    .route('/:restuarentId/photo')
+    .put(restuarentPhotoUpload);
+router
     .route('/')
     .get(advancedResults(Restuarent, {
     path: 'menus',
@@ -23,7 +26,7 @@ router
 }), getRestuarents)
     .post(createRestuarent);
 router
-    .route('/:id')
+    .route('/:restuarentId')
     .get(getRestuarent)
     .put(updateRestuarent)
     .delete(deleteRestuarent);

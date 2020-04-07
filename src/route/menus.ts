@@ -5,7 +5,8 @@ const {
   getFavouriteMenu,
   addMenu,
   updateMenu,
-  deleteMenu
+  deleteMenu,
+  menuPhotoUpload
 } = require('../controllers/menus');
 
 const Menu = require('../models/Menu');
@@ -13,6 +14,10 @@ const Menu = require('../models/Menu');
 const router = express.Router({ mergeParams: true });
 
 const advancedResults = require('../middleware/advancedResults');
+
+router.route('/favourites').get(getFavouriteMenu);
+
+router.route('/:menuId/photo').put(menuPhotoUpload);
 
 router
   .route('/')
@@ -24,8 +29,6 @@ router
     getMenu
   )
   .post(addMenu);
-
-router.route('/favourites').get(getFavouriteMenu);
   
 router
   .route('/:menuId')

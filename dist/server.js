@@ -4,6 +4,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const colors = require('colors');
+const fileupload = require('express-fileupload');
 const connectDB = require("../config/db");
 const OpenApiValidator = require('express-openapi-validator').OpenApiValidator;
 const jsYaml = require('js-yaml');
@@ -22,6 +23,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
+//File uploading
+app.use(fileupload());
+//Set static folder
+app.use(express.static(path.join(__dirname, "public")));
 new OpenApiValidator({
     apiSpec: '/home/ajay/Restuarants/_data/openapispec.yaml',
     validateResponses: false,

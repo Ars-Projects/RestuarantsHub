@@ -43,11 +43,6 @@ const advancedResults = (model, populate) => async (req, res, next) => {
 
   if(populate){
       query = query.populate(populate);
-      // .exec(function(err, data) {
-      //   if (err) return handleError(err);
-      //   res.json(data);
-      // });
-      console.log(populate);
   }
 
   //Executing query

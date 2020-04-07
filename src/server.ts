@@ -35,6 +35,9 @@ if (process.env.NODE_ENV === "development") {
 app.use(fileupload());
 
 
+//Set static folder
+app.use(express.static(path.join(__dirname, "public")));
+
 new OpenApiValidator({
   apiSpec: '/home/ajay/Restuarants/_data/openapispec.yaml',
   validateResponses: false, // <-- to validate responses

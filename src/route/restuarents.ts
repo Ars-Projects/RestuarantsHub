@@ -27,7 +27,7 @@ router.use('/:restuarentId/orders', orderRouter);
 router.route('/radius/:zipcode/:distance').get(getRestuarentsInRadius);
 
 router
-  .route('/:id/photo')
+  .route('/:restuarentId/photo')
   .put(restuarentPhotoUpload);
 
 router

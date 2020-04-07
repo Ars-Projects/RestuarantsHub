@@ -157,7 +157,9 @@ exports.restuarentPhotoUpload = asyncHandler(async (req, res, next) => {
     );
   }
   //Create custom filename
-  file.name = `photo_${restuarent._id}${path.parse(file.name).ext}`;
+  file.name = `Restuarent_${restuarent.name}_${restuarent._id}${
+    path.parse(file.name).ext
+  }`;
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
     if (err) {
@@ -168,5 +170,8 @@ exports.restuarentPhotoUpload = asyncHandler(async (req, res, next) => {
       photo: file.name,
     });
   });
-
+res.status(200).json({
+  success: true,
+  data: file.name,
+});
 });
