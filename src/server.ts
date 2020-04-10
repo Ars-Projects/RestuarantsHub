@@ -69,7 +69,7 @@ app.use(hpp());
 app.use(cors());
 
 //Set static folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 new OpenApiValidator({
   apiSpec: '/home/ajay/RestuarantsHub/_data/openapispec.yaml',
