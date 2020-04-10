@@ -15,9 +15,9 @@ const User = require('../models/User');
 //@desc  Get All users
 //@route GET /api/v1/users
 //@access Private/Admin
-// exports.getUsers = asyncHandler(async (req, res, next) => {
-//   res.status(200).json(res.advancedResults);
-// });
+exports.getUsers = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    res.status(200).json(res.advancedResults);
+}));
 //@desc  Get single user
 //@route GET /api/v1/users/:userId
 //@access Private/Admin

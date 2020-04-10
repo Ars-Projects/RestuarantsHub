@@ -32,9 +32,9 @@ const OrderSchema = new mongoose_1.default.Schema({
         required: [true, 'Please add address'] },
     review: String,
     rating: Number,
-    restuarent: {
+    restuarant: {
         type: mongoose_1.default.Schema.ObjectId,
-        ref: "Restuarent",
+        ref: "Restuarant",
         required: true
     },
     menu: {
@@ -72,9 +72,9 @@ OrderSchema.statics.getAvgMenuRating = function (menuId) {
         catch (err) {
             console.error(err);
         }
-        // Updating the ratings for the restuarent 
+        // Updating the ratings for the restuarant 
         let menu = yield Menu.find({ 'menu._id': menuId });
-        Menu.getAverageRating(menu[0].restuarent);
+        Menu.getAverageRating(menu[0].restuarant);
     });
 };
 //Call getAverageCost after save

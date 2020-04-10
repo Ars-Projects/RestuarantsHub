@@ -26,29 +26,26 @@ const FoodSchema = new mongoose.Schema(
 
 const MenuSchema = new mongoose.Schema({
     menu:[FoodSchema],
-    favourites:{
-      type:Array
-    },
-    restuarent: {
+    restuarant: {
         type: mongoose.Schema.ObjectId,
-        ref: "Restuarent",
+        ref: "Restuarant",
         required: true
-      }
-    // orders: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "Order",
-    //     required: true
-    //   }
+      },
+    user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true
+  }
 });
 
 //static method to get average rating of menu
 
-MenuSchema.statics.getAverageRating = async function (restuarentId) {
+MenuSchema.statics.getAverageRating = async function (restuarantId) {
   const obj = await this.aggregate([
     {
       $match: { 
-        restuarent: {
-          $in: [ObjectID(restuarentId)] 
+        restuarant: {
+          $in: [ObjectID(restuarantId)] 
         },
      },
     },
@@ -61,7 +58,7 @@ MenuSchema.statics.getAverageRating = async function (restuarentId) {
     },
   ]);
   try {
-    await this.model('Restuarent').findByIdAndUpdate(restuarentId, {
+    await this.model('Restuarant').findByIdAndUpdate(restuarantId, {
       averageRating: obj[0].averageRatings,
     });
   } catch (err) {
@@ -71,12 +68,12 @@ MenuSchema.statics.getAverageRating = async function (restuarentId) {
 
 //Call getAverageCost after save
 MenuSchema.post("save", function() {
-  this.constructor.getAverageRating(this.restuarent);
+  this.constructor.getAverageRating(this.restuarant);
 });
 
 //Call getAverageCost before remove
 MenuSchema.pre("remove", function() {
-  this.constructor.getAverageRating(this.restuarent);
+  this.constructor.getAverageRating(this.restuarant);
 });
 
 

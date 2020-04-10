@@ -11,19 +11,19 @@ const {
 
 const router = express.Router({ mergeParams: true });
 
-router
-  .route('/')
-  .post(createOrder);
+const { protect, authorize } = require('../middleware/auth');
+
+router.route('/:menuId').post(protect, authorize('customer', 'owner','admin'), createOrder);
 
 router
   .route('/:orderId')
   .put(updateOrder)
-  .delete(deleteOrder);
+  .delete(protect, authorize('customer', 'owner' ,'admin'), deleteOrder);
   
 router
-  .route('/reviews/:orderId')  
-  .post(addReview)
-  .put(updateReview)
-  .delete(deleteReview);
+  .route('/reviews/:orderId')
+  .post(protect, authorize('customer', 'owner', 'admin'), addReview)
+  .put(protect, authorize('customer', 'owner', 'admin'), updateReview)
+  .delete(protect, authorize('customer', 'owner', 'admin'), deleteReview);
 
 module.exports = router;

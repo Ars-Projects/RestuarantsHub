@@ -29,9 +29,9 @@ const MenuSchema = new mongoose_1.default.Schema({
     favourites: {
         type: Array
     },
-    restuarent: {
+    restuarant: {
         type: mongoose_1.default.Schema.ObjectId,
-        ref: "Restuarent",
+        ref: "Restuarant",
         required: true
     },
 });

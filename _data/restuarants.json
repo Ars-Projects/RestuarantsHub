@@ -1,0 +1,64 @@
+[
+  {
+    "_id": "5d713995b721c3bb38c1f5d0",
+    "user": "5d7a514b5d2c12c7449be045",
+    "name": "Devi Upahar",
+    "description": "Pure South Indian restuarant",
+    "website": "https://deviupahar.com",
+    "phone": "(111) 111-1111",
+    "email": "food@devi.com",
+    "address": "44 Chandra Layout Vijayanagar Bengaluru Karnataka 560040",
+    "averageRating": 8,
+    "bar": false,
+    "nonVeg": false,
+    "tableBooking": false,
+    "acceptCard": true,
+    "discount": "20"
+  },
+  {
+    "_id": "5d713a66ec8f2b88b8f830b8",
+    "user": "5d7a514b5d2c12c7449be046",
+    "name": "Deewar",
+    "description": "North Indian Hotel with Bar",
+    "website": "https://deewar.com",
+    "phone": "(222) 222-2222",
+    "email": "food@deewar.com",
+    "address": "331 5B Rd Whitefield Bengaluru Karnataka 560048",
+    "averageRating": 8,
+    "bar": true,
+    "nonVeg": true,
+    "tableBooking": true,
+    "acceptCard": true
+  },
+  {
+    "_id": "5d725a037b292f5f8ceff787",
+    "user": "5c8a1d5b0190b214360dc031",
+    "name": "Smackznego",
+    "description": "Fresh Continental food in Bengaluru",
+    "website": "https://smackznego.com",
+    "phone": "(333) 333-3333",
+    "email": "food@Smackznego.com",
+    "address": "91, 60 Feet Rd Chandra Layout Bengaluru Karnataka 560040",
+    "averageRating": 8,
+    "bar": false,
+    "nonVeg": true,
+    "tableBooking": true,
+    "acceptCard": true
+  },
+
+  {
+    "_id": "5d725a1b7b292f5f8ceff789",
+    "user": "5c8a1d5b0190b214360dc032",
+    "name": "Asian town",
+    "description": "Best sushi and chinese food in the town",
+    "website": "https://asiantown.com",
+    "phone": "(444) 444-4444",
+    "email": "food@asiantown.com",
+    "address": "Vinoba Road(Hunsur Road) Mysuru Karnataka 570012",
+    "averageRating": 8,
+    "bar": true,
+    "nonVeg": true,
+    "tableBooking": true,
+    "acceptCard": true
+  }
+]

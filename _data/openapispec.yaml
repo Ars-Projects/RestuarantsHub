@@ -8,11 +8,11 @@ servers:
 
 # Endpoints
 paths:
-  /restuarents:
-    # Get all restuarent list
+  /restuarants:
+    # Get all restuarant list
     get:
-      operationId: getRestuarents
-      description: Gets list of restuarents
+      operationId: getRestuarants
+      description: Gets list of restuarants
       # Query parameters
       parameters:
         # sort retreiving data
@@ -26,12 +26,12 @@ paths:
       responses:
       # Response code
         200:
-          description: details of restuarent list
+          description: details of restuarant list
           content:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/restuarents'                  
+                $ref: '#/components/schemas/restuarants'                  
         400:
           description: Bad request
 
@@ -63,7 +63,7 @@ components:
         description: 'specify page to be displayed'
     
   schemas:
-    restuarents:
+    restuarants:
       properties:
         success:
           type: boolean
@@ -72,7 +72,7 @@ components:
         pagination:
           $ref: '#/components/schemas/pagination'
         data:
-          $ref: '#/components/schemas/Restuarent'
+          $ref: '#/components/schemas/Restuarant'
 
     pagination:
       properties:
@@ -81,7 +81,7 @@ components:
         prev:
           type: object
     
-    Restuarent:
+    Restuarant:
       properties:
         name:
           type: string

@@ -17,7 +17,7 @@ components:
       in:  query
       required:  false
       type: string
-      description: Return restuarent with selected fields
+      description: Return restuarant with selected fields
     page:
       name: page
       in:  query
@@ -35,7 +35,7 @@ components:
         type: object
   
   schemas:
-    restuarents:
+    restuarants:
       properties:
         success:
           type: boolean
@@ -44,7 +44,7 @@ components:
         pagination:
           $ref: '#/components/pagination'
         data:
-          $ref: './model.yaml#/components/schemas/Restuarent'
+          $ref: './model.yaml#/components/schemas/Restuarant'
         
           
 

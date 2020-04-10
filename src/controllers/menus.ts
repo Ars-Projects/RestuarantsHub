@@ -3,19 +3,19 @@ let Menu = require('../models/Menu');
 const path = require('path');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
-const Restuarent = require('../models/Restuarent');
+const Restuarant = require('../models/Restuarant');
 const ObjectID = require('mongodb').ObjectID;
 
-//@desc  Get Menu of a restuarent
-//@route GET /api/v1/restuarents/:restuarentId/menus
+//@desc  Get Menu of a restuarant
+//@route GET /api/v1/restuarants/:restuarantId/menus
 //@route GET /api/v1/menus
 //@access Public
 exports.getMenu = asyncHandler(async (req, res, next) => {
-  if (req.params.restuarentId) {
+  if (req.params.restuarantId) {
     const menu = await Menu.find({
-      restuarent: req.params.restuarentId
+      restuarant: req.params.restuarantId
     }).populate({
-      path: 'restuarent',
+      path: 'restuarant',
       select: 'name description'
     });
     res.status(200).json({ Success: true, data: menu });
@@ -24,16 +24,16 @@ exports.getMenu = asyncHandler(async (req, res, next) => {
   }
 });
 
-//@desc  Get Favourites/fast moving Menu of a restuarent
-//@route GET /api/v1/restuarents/:restuarentId/menus/favourites
+//@desc  Get Favourites/fast moving Menu of a restuarant
+//@route GET /api/v1/restuarants/:restuarantId/menus/favourites
 //@access Public
 exports.getFavouriteMenu = asyncHandler(async (req, res, next) => {
-  if (req.params.restuarentId) {
+  if (req.params.restuarantId) {
     const obj = await Menu.aggregate([
       {
         $match: {
-          restuarent: {
-            $in: [ObjectID(req.params.restuarentId)],
+          restuarant: {
+            $in: [ObjectID(req.params.restuarantId)],
           },
         },
       },
@@ -48,46 +48,73 @@ exports.getFavouriteMenu = asyncHandler(async (req, res, next) => {
     res.status(200).json({ Success: true, data: obj[0].menu });
   } else {
     return next(
-      new ErrorResponse(`No menu with id of ${req.params.restuarentId}`, 404)
+      new ErrorResponse(`No menu with id of ${req.params.restuarantId}`, 404)
     );
   }
 });
 
+//@desc  Create new Restuarant
+//@route POST /api/v1/restuarants/:restuarantId/menus
+//@access Private
+exports.createMenu = asyncHandler(async (req, res, next) => {
+   //Add user to req,body
+  req.body.user = req.user.id;
+  req.body.restuarant = req.params.restuarantId;
+  
+  //Check for publised restuarant
+  const publishedMenu = await Menu.findOne({ user: req.user.id });
+
+  //if the owner is not an admin, they can only add one restuarant
+  if (publishedMenu && req.user.role != 'admin') {
+    return next(
+      new ErrorResponse(
+        `the user with ID ${req.user.id} has already published a menu`,
+        400
+      )
+    );
+  }
+
+  const menu = await Menu.create(req.body);
+  res.status(201).json({ Success: true, data: menu });
+});
+
+
 //@desc Add menu
-//@route POST /api/v1/restuarents/:restuarentId/menus
+//@route POST /api/v1/restuarants/:restuarantId/menus/addmenu
 //@access Private
 exports.addMenu = asyncHandler(async (req, res, next) => {
   //link to models/course/courseschema/bootcampId
-  req.body.restuarent = req.params.restuarentId;
-  // req.body.user = req.user.id;
+  req.body.restuarant = req.params.restuarantId;
+  req.body.user = req.user.id;
 
-  const restuarent = await Restuarent.findById(req.params.restuarentId);
+  const restuarant = await Restuarant.findById(req.params.restuarantId);
 
-  if (!restuarent) {
+  if (!restuarant) {
     return next(
       new ErrorResponse(
-        `No restuarent with the id of ${req.params.restuarentId}`,
+        `No restuarant with the id of ${req.params.restuarantId}`,
         404
       )
     );
   }
 
-  // // Make sure user is bootcamp owner
-  // if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-  //     return next(
-  //         new ErrorResponse(
-  //             `User ${req.user.id} is not authorized to add a course to bootcamp ${bootcamp._id}`,
-  //             401
-  //         )
-  //     );
-  // }
+  // Make sure user is restuarant owner
+  if (restuarant.user.toString() !== req.user.id && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update this restuarant`,
+        401
+      )
+    );
+  }
 
-  const menu = await Menu.updateOne({restuarent: req.params.restuarentId }, 
+
+  const menu = await Menu.updateOne({restuarant: req.params.restuarantId }, 
     {$push: {menu: req.body}});
 
   if (!menu) {
     return next(
-      new ErrorResponse(`No menu with id of ${req.params.restuarentId}`, 404)
+      new ErrorResponse(`No menu with id of ${req.params.restuarantId}`, 404)
     );
   }
 
@@ -98,26 +125,36 @@ exports.addMenu = asyncHandler(async (req, res, next) => {
 });
 
 //@desc Update menu
-//@route PUT /api/v1/restuarents/:restuarentId/menus/:menuId
+//@route PUT /api/v1/restuarants/:restuarantId/menus/:menuId
 //@access Private
 exports.updateMenu = asyncHandler( async(req, res, next) => {
-  // //link to models/menu/menuschema/restuarentId
+  // //link to models/menu/menuschema/restuarantId
 
-const restuarent = await Restuarent.findById(req.params.restuarentId);
+const restuarant = await Restuarant.findById(req.params.restuarantId);
 
-if (!restuarent) {
+if (!restuarant) {
   return next(
     new ErrorResponse(
-      `No restuarent with the id of ${req.params.restuarentId}`,
+      `No restuarant with the id of ${req.params.restuarantId}`,
       404
     )
   );
 }
 
+// Make sure user is restuarant owner
+  if (restuarant.user.toString() !== req.user.id && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update this restuarant`,
+        401
+      )
+    );
+  }
+
+
 const menu = await Menu.updateOne(
-  { restuarent: req.params.restuarentId },
-  { $pull: { menu: { _id: req.params.menuId } } },
-  { multi: true }
+  { restuarant: req.params.restuarantId },
+  { $pull: { menu: { _id: req.params.menuId } } }
 );
 
 if (!menu) {
@@ -126,10 +163,11 @@ if (!menu) {
   );
 }
 
-req.body._id = req.params.menuId;
+const menu_Id  = req.params.menuId;
+req.body._id = menu_Id;
 
 await Menu.updateOne(
-  { restuarent: req.params.restuarentId },
+  { restuarant: req.params.restuarantId },
   { $push: { menu: req.body } }
 );
 res.status(200).json({
@@ -139,13 +177,13 @@ res.status(200).json({
 });
 
 // @desc      Delete menu
-// @route     DELETE /api/v1/restuarents/:restuarentId/menus/:menuId
+// @route     DELETE /api/v1/restuarants/:restuarantId/menus/:menuId
 // @access    Private
 exports.deleteMenu = asyncHandler(async (req, res, next) => {
   const menu = await Menu.updateOne(
-  { restuarent: req.params.restuarentId },
-  { $pull: { menu: { _id: req.params.menuId } } },
-  { multi: true });
+  { restuarant: req.params.restuarantId },
+  { $pull: { menu: { _id: req.params.menuId } } }
+  );
 
   if (!menu) {
     return next(
@@ -153,15 +191,15 @@ exports.deleteMenu = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // // Make sure user is course owner
-  // if (course.user.toString() !== req.user.id && req.user.role !== "admin") {
-  //   return next(
-  //     new ErrorResponse(
-  //       `User ${req.user.id} is not authorized to update a course ${course._id}`,
-  //       401
-  //     )
-  //   );
-  // }
+  // Make sure user is restuarant owner
+  if (menu.user.toString() !== req.user.id && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update this restuarant`,
+        401
+      )
+    );
+  }
 
   res.status(200).json({
     success: true,
@@ -170,30 +208,30 @@ exports.deleteMenu = asyncHandler(async (req, res, next) => {
 });
 
 
-// @desc      Upload photo for restuarent
-// @route     PUT /api/v1/restuarents/:restuarentId/:menuId/photo
+// @desc      Upload photo for restuarant
+// @route     PUT /api/v1/restuarants/:restuarantId/:menuId/photo
 // @access    Private
 exports.menuPhotoUpload = asyncHandler(async (req, res, next) => {
-  const restuarent = await Restuarent.findById(req.params.restuarentId);
+  const restuarant = await Restuarant.findById(req.params.restuarantId);
 
-  if (!restuarent) {
+  if (!restuarant) {
     return next(
       new ErrorResponse(
-        `restuarent not found with id of ${req.params.restuarentId}`,
+        `restuarant not found with id of ${req.params.restuarantId}`,
         404
       )
     );
   }
 
-  // Make sure user is bootcamp owner
-  // if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-  //   return next(
-  //     new ErrorResponse(
-  //       `User ${req.user.id} is not authorized to delete this bootcamp`,
-  //       401
-  //     )
-  //   );
-  // }
+  // Make sure user is restuarant owner
+  if (restuarant.user.toString() !== req.user.id && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete this restuarant`,
+        401
+      )
+    );
+  }
 
   if (!req.files){
     return next(new ErrorResponse(`Please upload a file`, 400));
@@ -215,7 +253,7 @@ exports.menuPhotoUpload = asyncHandler(async (req, res, next) => {
     );
   }
   //Create custom filename
-  file.name = `menu_${restuarent.name}_${req.params.menuId}${
+  file.name = `menu_${restuarant.name}_${req.params.menuId}${
     path.parse(file.name).ext
   }`;
 

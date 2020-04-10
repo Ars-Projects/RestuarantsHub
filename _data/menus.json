@@ -32,8 +32,8 @@
         "isAvailable": true,
         "avgrating": 6
       }],
-	"favourites":["IdlyVada_id","Dosa_id"],
-	"restuarent":"5d713995b721c3bb38c1f5d0"
+  "user":"5d7a514b5d2c12c7449be045",
+	"restuarant":"5d713995b721c3bb38c1f5d0"
 	},
 	{
     "menu": [
@@ -70,8 +70,8 @@
         "avgrating": "9"
       }
     ],
-    "favourites": ["Biriyani", "methi pulav"],
-    "restuarent": "5d713a66ec8f2b88b8f830b8"
+    "user":"5d7a514b5d2c12c7449be046",
+    "restuarant": "5d713a66ec8f2b88b8f830b8"
   }
 ]
 	

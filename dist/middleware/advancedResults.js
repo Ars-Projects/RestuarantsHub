@@ -42,11 +42,6 @@ const advancedResults = (model, populate) => (req, res, next) => __awaiter(this,
     query = query.skip(startIndex).limit(limit);
     if (populate) {
         query = query.populate(populate);
-        // .exec(function(err, data) {
-        //   if (err) return handleError(err);
-        //   res.json(data);
-        // });
-        console.log(populate);
     }
     //Executing query
     const results = yield query;

@@ -36,28 +36,25 @@ const FoodSchema = new mongoose_1.default.Schema({
 });
 const MenuSchema = new mongoose_1.default.Schema({
     menu: [FoodSchema],
-    favourites: {
-        type: Array
-    },
-    restuarent: {
+    restuarant: {
         type: mongoose_1.default.Schema.ObjectId,
-        ref: "Restuarent",
+        ref: "Restuarant",
+        required: true
+    },
+    user: {
+        type: mongoose_1.default.Schema.ObjectId,
+        ref: "User",
         required: true
     }
-    // orders: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "Order",
-    //     required: true
-    //   }
 });
 //static method to get average rating of menu
-MenuSchema.statics.getAverageRating = function (restuarentId) {
+MenuSchema.statics.getAverageRating = function (restuarantId) {
     return __awaiter(this, void 0, void 0, function* () {
         const obj = yield this.aggregate([
             {
                 $match: {
-                    restuarent: {
-                        $in: [ObjectID(restuarentId)]
+                    restuarant: {
+                        $in: [ObjectID(restuarantId)]
                     },
                 },
             },
@@ -70,7 +67,7 @@ MenuSchema.statics.getAverageRating = function (restuarentId) {
             },
         ]);
         try {
-            yield this.model('Restuarent').findByIdAndUpdate(restuarentId, {
+            yield this.model('Restuarant').findByIdAndUpdate(restuarantId, {
                 averageRating: obj[0].averageRatings,
             });
         }
@@ -81,11 +78,11 @@ MenuSchema.statics.getAverageRating = function (restuarentId) {
 };
 //Call getAverageCost after save
 MenuSchema.post("save", function () {
-    this.constructor.getAverageRating(this.restuarent);
+    this.constructor.getAverageRating(this.restuarant);
 });
 //Call getAverageCost before remove
 MenuSchema.pre("remove", function () {
-    this.constructor.getAverageRating(this.restuarent);
+    this.constructor.getAverageRating(this.restuarant);
 });
 module.exports = mongoose_1.default.model('Menu', MenuSchema, 'Menu');
 //# sourceMappingURL=Menu.js.map
