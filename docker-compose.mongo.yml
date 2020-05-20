@@ -1,0 +1,74 @@
+version: "3.5"
+
+services:
+  mongodb-primary:
+    # image: 'bitnami/mongodb:latest'
+    image: "bitnami/mongodb:4.2-debian-9"
+    # image: 'bitnami/mongodb:4.0-debian-9'
+    # container_name: mongodb-primary
+    # user: root
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_ROOT_PASSWORD=password123
+      # - MONGODB_USERNAME=fhiruser
+      # - MONGODB_PASSWORD=password123
+      # - MONGODB_DATABASE=fhir
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      # - ALLOW_EMPTY_PASSWORD=yes
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_NAME=rset
+    ports:
+      - "37017:27017"
+    volumes:
+      - "mongodb_master_data:/bitnami"
+      # - './mount-data//mongodb_master_data:/bitnami'
+
+  mongodb-secondary:
+    # image: 'bitnami/mongodb:latest'
+    image: "bitnami/mongodb:4.2-debian-9"
+    # image: 'bitnami/mongodb:4.0-debian-9'
+    # container_name: mongodb-secondary
+    # user: root
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+      - MONGODB_PRIMARY_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_PRIMARY_HOST=mongodb-primary
+      - MONGODB_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_REPLICA_SET_NAME=rset
+    ports:
+      - "37018:27017"
+    volumes:
+      - "mongodb_secondary_data:/bitnami"
+      # - './mount-data//mongodb_secondary_data:/bitnami'
+
+  mongodb-arbiter:
+    # image: 'bitnami/mongodb:latest'
+    image: "bitnami/mongodb:4.2-debian-9"
+    # image: 'bitnami/mongodb:4.0-debian-9'
+    # container_name: mongodb-arbiter
+    # user: root
+    depends_on:
+      - mongodb-primary
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-arbiter
+      - MONGODB_PRIMARY_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      # - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_REPLICA_SET_MODE=arbiter
+      - MONGODB_PRIMARY_HOST=mongodb-primary
+      - MONGODB_PRIMARY_PORT_NUMBER=27017
+      - MONGODB_REPLICA_SET_NAME=rset
+    ports:
+      - "37019:27017"
+    volumes:
+      - "mongodb_arbiter_data:/bitnami"
+      # - './mount-data/mongodb_arbiter_data:/bitnami'
+
+volumes:
+  mongodb_master_data:
+  mongodb_secondary_data:
+  mongodb_arbiter_data:

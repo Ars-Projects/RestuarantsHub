@@ -1,0 +1,31 @@
+version: '3.5'
+services:
+  app:
+    container_name: docker-restaurantHub
+    restart: always
+    build: .
+    environment:
+        NODE_ENV: "${NODE_ENV}"
+        PORT: "${PORT}"
+        MongoURI: "${MongoURI}"
+        GEOCODER_PROVIDER: "${GEOCODER_PROVIDER}"
+        GEOCODER_API_KEY: "${GEOCODER_API_KEY}"
+        FILE_UPLOAD_PATH: "${FILE_UPLOAD_PATH}"
+        MAX_FILE_UPLOAD: "${MAX_FILE_UPLOAD}"
+        JWT_SECRET: "${JWT_SECRET}"
+        JWT_EXPIRE: "${JWT_EXPIRE}"
+        JWT_COOKIE_EXPIRE: "${JWT_COOKIE_EXPIRE}"
+        SMTP_HOST: "${SMTP_HOST}"
+        SMTP_EMAIL: "${SMTP_EMAIL}"
+        SMTP_PASSWORD: "${JWT_SECRET}"
+        FROM_EMAIL: "${FROM_EMAIL}"
+        FROM_NAME: "${FROM_NAME}"
+    ports:
+      - '8000:4000'
+    links:
+      - mongodb-primary
+  # mongo:
+  #   container_name: mongo
+  #   image: mongo
+  #   ports:
+  #     - '27017:27017'

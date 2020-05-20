@@ -4,7 +4,7 @@
   "description": "Choose your home food",
   "main": "dist/server.js",
   "scripts": {
-    "start": "set NODE_ENV=production && \"node ./dist/server.js\"",
+    "start": "node ./dist/server.js",
     "dev": "nodemon ./dist/server.js"
   },
   "author": "Ajay",
