@@ -30,7 +30,7 @@ jobs:
         uses: peter-murray/workflow-application-token-action@v1
         with:
           application_id: ${{ secrets.APPLICATION_ID }}
-          application_private_key: ${{ secrets.APP_PVT_KEY }}
+          application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
       - name: Use Application Token to create a release
         uses: actions/create-release@v1
         env:
