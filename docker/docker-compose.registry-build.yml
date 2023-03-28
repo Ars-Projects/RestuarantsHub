@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  # temporal-application:
+  #   image: ${DOCKER_REGISTRY:-asia.gcr.io}/${GCP_PROJECT:-wellostack}/temporal-application:${TAG:-latest}
+  #   build:
+  #     context: ../
+  #     dockerfile: ./Dockerfile
+  temporal-worker:
+    image: ${DOCKER_REGISTRY:-asia.gcr.io}/${GCP_PROJECT:-wellostack}/app:${TAG:-latest}
+    build:
+      context: ../
+      dockerfile: ./Dockerfile
