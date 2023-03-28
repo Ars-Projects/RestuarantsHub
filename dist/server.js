@@ -54,14 +54,14 @@ app.use(hpp());
 app.use(cors());
 //Set static folder
 app.use(express.static(path.join(__dirname, "/public")));
-// new OpenApiValidator({
-//     apiSpec: '/home/ajay/RestuarantsHub/_data/openapispec.yaml',
-//     validateResponses: false,
-//     validateRequests: false
-//     // unknownFormats: ['my-format'] // <-- to provide custom formats
-// })
-//     .install(app)
-//     .then(() => {
+new OpenApiValidator({
+    apiSpec: '/home/ajay/RestuarantsHub/_data/openapispec.yaml',
+    validateResponses: false,
+    validateRequests: false
+    // unknownFormats: ['my-format'] // <-- to provide custom formats
+})
+    .install(app)
+    .then(() => {
     //Mount Routers
     app.use("/api/v1/restuarants", restuarants);
     app.use("/api/v1/menus", menus);
@@ -70,7 +70,7 @@ app.use(express.static(path.join(__dirname, "/public")));
     app.use('/api/v1/users', users);
     app.use('/api/v1/auth', auth);
     app.use(errorHandler);
-// });
+});
 // app.use((err, req, res, next) => {
 //   const statusCode = err.statusCode || 500;
 //   res.status(statusCode).json({

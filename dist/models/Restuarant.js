@@ -111,7 +111,7 @@ const RestuarantSchema = new mongoose_1.default.Schema({
 });
 //Create bootcamp slump from the name
 RestuarantSchema.pre('save', function (next) {
-    this.slug = slugify_1.default(this.name, { lower: true });
+    this.slug = (0, slugify_1.default)(this.name, { lower: true });
     next();
 });
 //Geocode & create location field
