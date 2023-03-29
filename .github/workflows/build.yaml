@@ -34,10 +34,7 @@ jobs:
         with:
           application_id: ${{ secrets.RESTHUB2_TEST_APP_ID }}
           application_private_key: ${{ secrets.RESTHUB2_APP_SECRET }}
-      # - name: Use Application Token to create a release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+      
       
       - name: Build
         run: |
