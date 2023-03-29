@@ -33,7 +33,7 @@ jobs:
         uses: peter-murray/workflow-application-token-action@v1
         with:
           application_id: ${{ secrets.RESTHUB2_TEST_APP_ID }}
-          application_private_key: ${{ secrets.RESTHUB2_TEST_APP_PVT_SECRET }}
+          application_private_key: ${{ secrets.RESTHUB2_APP_SECRET }}
       # - name: Use Application Token to create a release
       #   uses: actions/create-release@v1
       #   env:
