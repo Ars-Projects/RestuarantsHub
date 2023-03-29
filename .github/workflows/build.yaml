@@ -35,6 +35,9 @@ jobs:
       #   uses: actions/create-release@v1
       #   env:
       #     GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
+      - name: Checkout
+        uses: actions/checkout@master
+      
       - name: Build
         run: |
           docker-compose -f docker-compose.registry-build.yml build --build-arg GITHUB_TOKEN=${{ steps.get_workflow_token.outputs.token }}
