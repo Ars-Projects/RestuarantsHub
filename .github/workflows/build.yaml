@@ -25,6 +25,9 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      
       - name: Get Token
         id: get_workflow_token
         uses: peter-murray/workflow-application-token-action@v1
@@ -35,13 +38,11 @@ jobs:
       #   uses: actions/create-release@v1
       #   env:
       #     GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
-      - name: Checkout
-        uses: actions/checkout@master
       
       - name: Build
         run: |
-          docker-compose -f docker-compose.registry-build.yml build --build-arg GITHUB_TOKEN=${{ steps.get_workflow_token.outputs.token }}
-          TAG=dev docker-compose -f docker-compose.registry-build.yml build --build-arg GITHUB_TOKEN=${{ steps.get_workflow_token.outputs.token }}
+          docker-compose -f docker/docker-compose.registry-build.yml build --build-arg GITHUB_TOKEN=${{ steps.get_workflow_token.outputs.token }}
+          TAG=dev docker-compose -f docker/docker-compose.registry-build.yml build --build-arg GITHUB_TOKEN=${{ steps.get_workflow_token.outputs.token }}
     
         
 
