@@ -19,7 +19,8 @@ jobs:
         uses: actions/checkout@master
 
       - id: 'check'
-        run: secrets.GCP_CREDENTIALS
+        run: |
+          case "${{ secrets.GCP_CREDENTIALS }}"
         
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
