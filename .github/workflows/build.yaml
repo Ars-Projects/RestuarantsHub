@@ -19,8 +19,7 @@ jobs:
         uses: actions/checkout@master
 
       - id: 'check'
-        run: |
-          case "${{ secrets.GCP_CREDENTIALS }}"
+        run: echo "Environment is:$secrets.GCP_CREDENTIALS"
         
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
