@@ -27,7 +27,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      
+        
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
       # - name: Get Token
       #   id: get_workflow_token
       #   uses: peter-murray/workflow-application-token-action@v1
