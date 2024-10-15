@@ -11,16 +11,6 @@ on:
       # - k8s-istio-opa
 
 # Environment variables available to all jobs and steps in this workflow
-# env:
-#   GCP_PROJECT: wellostack
-#   #   GCP_EMAIL: ${{ secrets.WELLOSTACK_SA_EMAIL }}
-#   # GITHUB_SHA: ${{ github.sha }}
-#   TAG: ${{ github.sha }}
-  # TAG: latest
-  # TAG: dev
-#   GKE_ZONE: us-west1-a
-#   GKE_CLUSTER: example-gke-cluster
-#   IMAGE: gke-test
 jobs:
   create-release:
     runs-on: ubuntu-latest
@@ -29,7 +19,7 @@ jobs:
         uses: actions/checkout@master
 
       - id: 'check'
-        run: '${{ secrets.GCP_CREDENTIALS }}'
+        run: secrets.GCP_CREDENTIALS
         
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
